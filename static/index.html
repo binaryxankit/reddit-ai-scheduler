@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Mastermind - Content Calendar Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Reddit Mastermind</h1>
+            <p class="subtitle">Automated Content Calendar Generator</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Input Form -->
+            <section class="input-section" id="inputSection">
+                <h2>Generate Content Calendar</h2>
+                
+                <div class="form-group">
+                    <button class="btn btn-secondary" onclick="loadSampleData()">Load Sample Data (SlideForge)</button>
+                </div>
+
+                <form id="calendarForm">
+                    <!-- Company Info -->
+                    <div class="form-section">
+                        <h3>Company Information</h3>
+                        <div class="form-group">
+                            <label>Company Name *</label>
+                            <input type="text" id="companyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="text" id="companyWebsite">
+                        </div>
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="companyDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Audience (comma-separated) *</label>
+                            <input type="text" id="targetAudience" placeholder="e.g., operators, consultants, founders" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Key Features (comma-separated)</label>
+                            <input type="text" id="keyFeatures" placeholder="e.g., AI-powered, templates, API">
+                        </div>
+                        <div class="form-group">
+                            <label>Domain/Topic Area *</label>
+                            <input type="text" id="domain" placeholder="e.g., presentation tools, slide creation" required>
+                        </div>
+                    </div>
+
+                    <!-- Personas -->
+                    <div class="form-section">
+                        <h3>Personas (Minimum 2)</h3>
+                        <div id="personasContainer">
+                            <div class="persona-item">
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input type="text" class="persona-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reddit Username *</label>
+                                    <input type="text" class="persona-username" placeholder="e.g., riley_ops" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role *</label>
+                                    <input type="text" class="persona-role" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Voice/Style *</label>
+                                    <textarea class="persona-voice" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Interests (comma-separated) *</label>
+                                    <input type="text" class="persona-interests" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Posting Style *</label>
+                                    <textarea class="persona-posting-style" rows="2" required></textarea>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-small" onclick="removePersona(this)">Remove</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addPersona()">+ Add Persona</button>
+                    </div>
+
+                    <!-- Subreddits -->
+                    <div class="form-section">
+                        <h3>Subreddits</h3>
+                        <div class="form-group">
+                            <label>Subreddit Names (comma-separated) *</label>
+                            <input type="text" id="subreddits" placeholder="e.g., productmanagement, startups, sales" required>
+                        </div>
+                    </div>
+
+                    <!-- Keywords -->
+                    <div class="form-section">
+                        <h3>Keywords to Target</h3>
+                        <div class="form-group">
+                            <label>Keywords (format: K1:keyword1, K2:keyword2, etc. or one per line) *</label>
+                            <textarea id="keywords" rows="6" placeholder="e.g., K1:best ai presentation maker&#10;K2:ai slide deck tool&#10;K3:pitch deck generator" required></textarea>
+                            <small style="color: #666;">Format: keyword_id:keyword (e.g., K1:best ai presentation maker)</small>
+                        </div>
+                    </div>
+
+                    <!-- Posts per Week -->
+                    <div class="form-section">
+                        <h3>Posting Frequency</h3>
+                        <div class="form-group">
+                            <label>Number of Posts per Week *</label>
+                            <input type="number" id="postsPerWeek" min="1" max="10" value="3" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Generate Calendar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>Content Calendar</h2>
+                    <div class="quality-badge" id="qualityBadge"></div>
+                </div>
+
+                <div class="warnings" id="warningsContainer"></div>
+
+                <div class="calendar-controls">
+                    <button class="btn btn-secondary" onclick="generateNextWeek()">Generate Next Week</button>
+                    <button class="btn btn-secondary" onclick="exportCalendar()">Export as JSON</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">Create New Calendar</button>
+                </div>
+
+                <div class="calendar-info" id="calendarInfo"></div>
+
+                <div class="calendar-table-container">
+                    <table class="calendar-table" id="calendarTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Username</th>
+                                <th>Subreddit</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Keywords</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+
