@@ -16,3 +16,14 @@ ENV/
 .coverage
 htmlcov/
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+ehthumbs.db
+
