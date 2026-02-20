@@ -11,8 +11,6 @@ import json
 import os
 
 from models import CalendarRequest, CalendarResponse, CompanyInfo, Persona, Keyword
-import json
-import os
 from dotenv import load_dotenv
 
 # Load environment variables before importing CalendarGenerator
