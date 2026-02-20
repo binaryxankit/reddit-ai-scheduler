@@ -88,6 +88,7 @@ Go to: **http://localhost:8000**
 ├── content_generator.py    # Content generation logic
 ├── scheduler.py            # Scheduling and distribution
 ├── validator.py            # Quality validation
+├── calendar_generator.py   # Main calendar generation orchestrator
 ├── static/                 # Frontend assets
 │   ├── index.html
 │   ├── style.css
